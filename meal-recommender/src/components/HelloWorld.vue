@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
- 
+
 </template>
 
 <style scoped>

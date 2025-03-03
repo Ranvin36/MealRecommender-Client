@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-    <h1>QuickBite<span>.</span></h1>
+    <h1>FlavorBot<span>.</span></h1>
   </header>
   <div class="content">  
     <RouterView />

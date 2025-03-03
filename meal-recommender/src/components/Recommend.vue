@@ -1,38 +1,36 @@
-<script>
+<script setup lang="ts">
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import { library } from '@fortawesome/fontawesome-svg-core';
     import { faCoffee,faPlus,faMinus } from '@fortawesome/free-solid-svg-icons';
     import RecipeLayout from './RecipeLayout.vue';
     import axios from "axios"
+    import { ref } from 'vue';
 
     library.add(faCoffee,faPlus,faMinus)
 
-    export default{
-        components:{
-            FontAwesomeIcon,
-            'RecipeLayout':RecipeLayout,
-        },
-        data(){
-            return{
-                ingredients:[""],
-                recommendations:[]
-            }
-        },
-        methods:{
-            addIngredient(){
-                this.ingredients.push("")
-            },
-            removeIngredints(index){
-                this.ingredients.splice(index,1)
-            },
-            onChange(index,value){
-                this.ingredients[index] = value
-            },
-            async recommedRecipes(){
-                const data = {"ingredients":this.ingredients}
-                const response = await axios.post("http://127.0.0.1:5000/predict",data)
-                this.recommendations= response.data
-            }
+    const ingredients = ref<string[]>([" "])
+    const recommendations = ref<any[]>([" "])
+
+    const addIngredient = () =>{
+        ingredients.value.push("")
+    }
+    const removeIngredints =(index:number) =>{
+        ingredients.value.splice(index,1)
+    }
+    const onChange = (index:any,event:Event) =>{
+        const target = event.currentTarget as HTMLInputElement;
+        if(event){
+            ingredients.value[index] = target.value
+        }
+    }
+    const  recommedRecipes = async() =>{
+        try{
+            const data = {"ingredients":ingredients}
+            const response = await axios.post("http://127.0.0.1:5000/predict",data)
+            recommendations.value= response.data
+        }
+        catch(error){
+            console.log(error)
         }
     }
 </script>
@@ -49,7 +47,7 @@
                         <div class="remove" @click="removeIngredints(index)">
                             <font-awesome-icon :icon="['fa', 'minus']"  style="color: #fff;"/>
                         </div>
-                        <input type="text" placeholder="Add Ingredient" @change="onChange(index,$event.target.value)">
+                        <input type="text" placeholder="Add Ingredient" @change="onChange(index,$event)">
                     </div>
                     <div class="add-input" @click="addIngredient()">
                         <font-awesome-icon :icon="['fa', 'plus']"  style="color: #000;"/>

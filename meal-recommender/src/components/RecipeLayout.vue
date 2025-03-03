@@ -1,15 +1,11 @@
-<script>
-    export default{
-        name:'RecipeLayout',
-        methods:{
-            parseNER(ner_tag){
-                return JSON.parse(ner_tag.replace(/'/g, '"'))
-            }
-        },
-        props:{
-            recipe:Object
-        }
-    }
+<script setup lang="ts">
+defineProps<{
+    recipe:any
+}>()
+
+const parseNER = (ner_tag:any) =>{
+    return JSON.parse(ner_tag.replace(/'/g, '"'))
+}
 </script>
 
 <template>

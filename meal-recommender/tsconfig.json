@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false,
-    "jsx": "preserve",
+    "module": "esnext",
+    "target": "esnext",  // Or any other version that works with your app
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "strict": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
 }

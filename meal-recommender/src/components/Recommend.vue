@@ -51,9 +51,9 @@
                         </div>
                         <input type="text" placeholder="Add Ingredient" @change="onChange(index,$event.target.value)">
                     </div>
-                </div>
-                <div class="add-input" @click="addIngredient()">
-                    <font-awesome-icon :icon="['fa', 'plus']"  style="color: #000;"/>
+                    <div class="add-input" @click="addIngredient()">
+                        <font-awesome-icon :icon="['fa', 'plus']"  style="color: #000;"/>
+                    </div>
                 </div>
             </div>
         </div> 
@@ -146,6 +146,7 @@
         border-radius: 5px;
         transition: 0.5s;
         margin-top: 5px;
+        align-self: flex-start;
     }
 
     .add-input:hover{

@@ -1,163 +1,87 @@
-<script>
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-    import { library } from '@fortawesome/fontawesome-svg-core';
-    import { faCoffee,faPlus,faMinus } from '@fortawesome/free-solid-svg-icons';
-    import RecipeLayout from './RecipeLayout.vue';
-    import axios from "axios"
-
-    library.add(faCoffee,faPlus,faMinus)
-
-    export default{
-        components:{
-            FontAwesomeIcon,
-            'RecipeLayout':RecipeLayout,
-        },
-        data(){
-            return{
-                ingredients:[""]
-            }
-        },
-        methods:{
-            addIngredient(){
-                this.ingredients.push("")
-            },
-            removeIngredints(index){
-                this.ingredients.splice(index,1)
-            },
-            onChange(index,value){
-                this.ingredients[index] = value
-            },
-            async recommedRecipes(){
-                const data = {"ingredients":this.ingredients}
-                console.log(data,"DATA")
-                const response = await axios.post("http://127.0.0.1:5000/predict",data)
-                console.log(response.data)
-            }
-        }
-    }
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-    <div class="recommender-area">
-        <div class="recommender-title">
-            <p>Add Your Ingredients</p>
-        </div>
-        <div class="ingredients">
-            <div class="inputs-section">
-                <div v-for="(ingredients,index) in ingredients" :key="index" class="ing-input">
-                    <div class="remove" @click="removeIngredints(index)">
-                        <font-awesome-icon :icon="['fa', 'minus']"  style="color: #fff;"/>
-                    </div>
-                    <input type="text" placeholder="Add Ingredient" @change="onChange(index,$event.target.value)">
-                </div>
-            </div>
-            <div class="add-input" @click="addIngredient()">
-                <font-awesome-icon :icon="['fa', 'plus']"  style="color: #000;"/>
-            </div>
-        </div> 
-        <div class="recommend-recipes" @click="recommedRecipes()">
-            <a href="#">Recommend Recipes</a>
-        </div>
-    </div>
-    <div class="recipes">
-        <RecipeLayout/>
-    </div>
-
+  <header>
+    <h1>QuickBite<span>.</span></h1>
+  </header>
+  <div class="content">  
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
-    .recommender-area{
-        margin: 20px 0;
-        background-color: #302f2f6b;
-        min-height: 200px;
-        padding: 10px 40px;
-        border-radius: 20px;
-    }
-    .recommender-title{
-        margin: 20px 0;
-    }
+header {
+  line-height: 1.5;
+  max-height: 100vh;
+}
 
-    .ingredients{
-        display: flex;
-        align-items: center;
-    }
+header h1{
+  font-weight: 500;
+}
 
-    .ing-input{
-        background-color: #1a1818;
-        padding: 13px 15px;
-        border-radius: 5px;
-        margin-right: 5px;
-        position: relative;
-        transition: 0.5s;
-    }
-    
-    
-    .ing-input input{
-        background-color: transparent;
-        outline: none;
-        border: none;
-        color: #fff;
-    }
+header h1 span{
+  color: #195eff;
+  font-size: 30px;
+}
+.content{
+  padding: 30px 0;
+}
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
 
-    .remove{
-        position: absolute;
-        top: 7px;
-        right: 7px;
-        background-color: #302f2f6b;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        opacity: 0;
-        
-    }
+nav {
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 2rem;
+}
 
-    .ing-input:hover .remove{
-        opacity: 1;
-    }
+nav a.router-link-exact-active {
+  color: var(--color-text);
+}
 
-    .inputs-section{
-        display: flex;
-        align-items: center;
-    }
-    .add-input{
-        padding: 13px 20px;
-        background-color: #fff;
-        border-radius: 5px;
-        transition: 0.5s;
-    }
+nav a.router-link-exact-active:hover {
+  background-color: transparent;
+}
 
-    .add-input:hover{
-        cursor: pointer;
-        transform: scale(1.03);
-    }
+nav a {
+  display: inline-block;
+  padding: 0 1rem;
+  border-left: 1px solid var(--color-border);
+}
 
-    .recipes{
-        margin-top: 30px;
-    }
+nav a:first-of-type {
+  border: 0;
+}
 
-    .recommend-recipes{
-        background-color: #292828;
-        padding: 10px 20px;
-        border-radius: 5px;
-        width: 200px;
-        height: 50px;
-        margin: 10px 0;
-        text-align: center;
-        align-items: center;
-        display: flex;
-        cursor: pointer;
-        transition: 0.5s;
-    }
-    .recommend-recipes:hover{
-        background-color: #383636;
-    }
-    .recommend-recipes a{
-        color: #fff;
-        text-decoration: none;
-    }
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
 
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  nav {
+    text-align: left;
+    margin-left: -1rem;
+    font-size: 1rem;
+
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
+}
 </style>

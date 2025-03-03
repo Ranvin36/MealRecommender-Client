@@ -14,7 +14,8 @@
         },
         data(){
             return{
-                ingredients:[""]
+                ingredients:[""],
+                recommendations:[]
             }
         },
         methods:{
@@ -29,9 +30,8 @@
             },
             async recommedRecipes(){
                 const data = {"ingredients":this.ingredients}
-                console.log(data,"DATA")
                 const response = await axios.post("http://127.0.0.1:5000/predict",data)
-                console.log(response.data)
+                this.recommendations= response.data
             }
         }
     }
@@ -43,16 +43,18 @@
             <p>Add Your Ingredients</p>
         </div>
         <div class="ingredients">
-            <div class="inputs-section">
-                <div v-for="(ingredients,index) in ingredients" :key="index" class="ing-input">
-                    <div class="remove" @click="removeIngredints(index)">
-                        <font-awesome-icon :icon="['fa', 'minus']"  style="color: #fff;"/>
+            <div class="ing-wrap">
+                <div class="inputs-section">
+                    <div v-for="(ingredients,index) in ingredients" :key="index" class="ing-input">
+                        <div class="remove" @click="removeIngredints(index)">
+                            <font-awesome-icon :icon="['fa', 'minus']"  style="color: #fff;"/>
+                        </div>
+                        <input type="text" placeholder="Add Ingredient" @change="onChange(index,$event.target.value)">
                     </div>
-                    <input type="text" placeholder="Add Ingredient" @change="onChange(index,$event.target.value)">
                 </div>
-            </div>
-            <div class="add-input" @click="addIngredient()">
-                <font-awesome-icon :icon="['fa', 'plus']"  style="color: #000;"/>
+                <div class="add-input" @click="addIngredient()">
+                    <font-awesome-icon :icon="['fa', 'plus']"  style="color: #000;"/>
+                </div>
             </div>
         </div> 
         <div class="recommend-recipes" @click="recommedRecipes()">
@@ -60,7 +62,14 @@
         </div>
     </div>
     <div class="recipes">
-        <RecipeLayout/>
+        <div class="title">
+            <h2>Recommendations</h2>
+        </div>
+        <div class="recipes-flex">
+            <div v-for="(data,index) in recommendations":key="index">
+                <RecipeLayout :recipe="data"/>
+            </div>
+        </div>
     </div>
 
 </template>
@@ -77,9 +86,10 @@
         margin: 20px 0;
     }
 
-    .ingredients{
+    .ing-wrap{
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     .ing-input{
@@ -89,6 +99,7 @@
         margin-right: 5px;
         position: relative;
         transition: 0.5s;
+        margin-top: 5px;
     }
     
     
@@ -121,13 +132,20 @@
 
     .inputs-section{
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
     }
+
+    .title h2{
+        font-size: 20px;    
+    }
+
     .add-input{
         padding: 13px 20px;
         background-color: #fff;
         border-radius: 5px;
         transition: 0.5s;
+        margin-top: 5px;
     }
 
     .add-input:hover{
@@ -137,6 +155,12 @@
 
     .recipes{
         margin-top: 30px;
+    }
+    
+    .recipes-flex{
+        display: flex;
+        flex-wrap: wrap;
+
     }
 
     .recommend-recipes{
@@ -160,4 +184,21 @@
         text-decoration: none;
     }
 
+    @media screen and (max-width:500px) {
+        .recommender-area{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        .inputs-section{
+            display: flex;
+            align-self: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .add-input{
+            text-align: center;
+        }
+    
+    }
 </style>

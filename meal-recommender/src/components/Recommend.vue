@@ -30,7 +30,7 @@
             },
             async recommedRecipes(){
                 const data = {"ingredients":this.ingredients}
-                const response = await axios.post("http://127.0.0.1:5000/predict",data)
+                const response = await axios.post("https://meal-recommender-980481529602.us-central1.run.app/predict",data)
                 this.recommendations= response.data
             }
         }
